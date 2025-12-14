@@ -11,6 +11,7 @@ file(GLOB SRCS
 )
 
 add_library(macoq ${SRCS})
+target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 target_compile_definitions(macoq PRIVATE
     $<$<CONFIG:Debug>:MACOQ_DEBUG=1>
