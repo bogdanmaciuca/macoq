@@ -1,7 +1,8 @@
-#include <stdio.h>
+#include "common.h"
 
 int main() {
-    puts("Hello world!");
+    TEST(true);
+    TEST(false);
     return 0;
 }
 

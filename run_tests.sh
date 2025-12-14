@@ -1,6 +1,8 @@
 #!/usr/bin/sh
 
-cd build/tests
+cd build
+make
 
+cd tests
 ctest --output-on-failure
 
