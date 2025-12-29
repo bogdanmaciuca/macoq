@@ -18,7 +18,7 @@ void macoq_mutex_create(macoq_mutex* mutex) {
 }
 
 void macoq_mutex_release(macoq_mutex* mutex) {
-    assert(mutex->state == UNLOCKED);
+    assert(atomic_load(&mutex->state) == UNLOCKED);
 }
 
 void macoq_mutex_lock(macoq_mutex* mutex) {
