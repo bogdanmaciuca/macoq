@@ -9,5 +9,7 @@ endfunction()
 
 macoq_add_test(dummy)
 macoq_add_test(mutex)
-
+macoq_add_test(cond_var)
+macoq_add_test(semaphore)
+macoq_add_test(rwlock)
 

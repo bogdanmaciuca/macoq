@@ -1,24 +1,14 @@
 #include "macoq/macoq.h"
+#include <stdatomic.h>
 #include <assert.h>
-#include <unistd.h>
-#include <linux/futex.h>
-#include <syscall.h>
+#include "common.h"
 
 #define UNLOCKED  0
 #define LOCKED    1 // No waiters
 #define CONTENDED 2 // With waiters
 
-// Sleeps until *addr != value
-void syscall_wait(atomic_int* addr, int value);
-// Wakes up a single thread
-void syscall_wake(atomic_int* addr);
-
 void macoq_mutex_create(macoq_mutex* mutex) {
     mutex->state = UNLOCKED;
-}
-
-void macoq_mutex_release(macoq_mutex* mutex) {
-    assert(atomic_load(&mutex->state) == UNLOCKED);
 }
 
 void macoq_mutex_lock(macoq_mutex* mutex) {
@@ -52,11 +42,3 @@ void macoq_mutex_unlock(macoq_mutex* mutex) {
         syscall_wake(&mutex->state);
 }
 
-
-void syscall_wait(atomic_int* addr, int value) {
-    syscall(SYS_futex, addr, FUTEX_WAIT | FUTEX_PRIVATE_FLAG, value, NULL, NULL, 0);
-}
-
-void syscall_wake(atomic_int* addr) {
-    syscall(SYS_futex, addr, FUTEX_WAKE | FUTEX_PRIVATE_FLAG, 1, NULL, NULL, 0);
-}
