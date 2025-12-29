@@ -8,5 +8,6 @@ function(macoq_add_test TEST_NAME)
 endfunction()
 
 macoq_add_test(dummy)
+macoq_add_test(mutex)
 
 
