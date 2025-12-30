@@ -3,6 +3,7 @@
 #include "common.h"
 
 void macoq_semaphore_create(macoq_semaphore* sem, int initial_count) {
+    atomic_store(&sem->max_count, initial_count);
     atomic_store(&sem->count, initial_count);
 }
 
@@ -28,7 +29,10 @@ void macoq_semaphore_wait(macoq_semaphore* sem) {
 // TODO(maybe): implement optimization so that when there are no waiters no syscall gets used
 void macoq_semaphore_post(macoq_semaphore* sem) {
     atomic_fetch_add(&sem->count, 1);
-    syscall_wake(&sem->count);
+
+    if (atomic_load(&sem->count) != atomic_load(&sem->max_count)) {
+        syscall_wake(&sem->count);
+    }
 }
 
 bool macoq_semaphore_trywait(macoq_semaphore* sem) {

@@ -38,7 +38,8 @@ void macoq_mutex_unlock(macoq_mutex* mutex) {
     int old_state = atomic_exchange(&mutex->state, UNLOCKED);
 
     // If the mutex had waiters, we need to wake them
-    if (old_state == CONTENDED)
+    if (old_state == CONTENDED) {
         syscall_wake(&mutex->state);
+    }
 }
 

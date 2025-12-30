@@ -27,6 +27,7 @@ void macoq_cond_var_signal_all(macoq_cond_var* cv);
 void macoq_cond_var_wait(macoq_cond_var* cv, macoq_mutex* mutex);
 
 typedef struct {
+    atomic_int max_count;
     atomic_int count;
 } macoq_semaphore;
 // Initialize semaphore
