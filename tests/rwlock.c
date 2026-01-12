@@ -20,7 +20,7 @@ void* reader_thread(void* arg) {
 
         // CRITICAL SECTION (READ)
 
-        TEST(atomic_load(&writer_active) == 1 && "FAILURE: Reader entered while writer was active!\n");
+        TEST(atomic_load(&writer_active) == 0 && "FAILURE: Reader entered while writer was active!\n");
 
         // 2. Read value
         int val_start = shared_data;
@@ -30,7 +30,7 @@ void* reader_thread(void* arg) {
 
         // 4. Verify value hasn't changed while we held the lock
         int val_end = shared_data;
-        TEST(val_start != val_end && "FAILURE: Data changed (%d -> %d) while Reader %ld held lock!\n");
+        TEST(val_start == val_end && "FAILURE: Data changed while Reader held lock!\n");
 
         macoq_rwlock_unlock(&rwlock);
         usleep(50); // Give others a chance
