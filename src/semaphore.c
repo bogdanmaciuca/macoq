@@ -11,15 +11,13 @@ void macoq_semaphore_create(macoq_semaphore* sem, int initial_count) {
 void macoq_semaphore_wait(macoq_semaphore* sem) {
     while (true) {
         int count = atomic_load(&sem->count);
-
         // If there are no open slots AND no waiters
         if (count == 0) {
             // If this is still the case, set to -1 and then wait
             if (atomic_compare_exchange_strong(&sem->count, &count, -1)) {
                 syscall_wait(&sem->count, -1);
-                continue;
             }
-            // If not the case, test the rest of the cases
+            continue;
         }
         // If there are waiters, simply wait
         else if (count == -1) {

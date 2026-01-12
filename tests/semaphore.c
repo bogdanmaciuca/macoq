@@ -61,6 +61,8 @@ int main() {
 
     for (int i = 0; i < attempts; i++) {
         macoq_avg += time_test(increment);
+        printf("%d ?= %d\n", sum, T*N);
+        // TEST(sum == T * N);
         reference_avg += time_test(increment_reference);
         unsafe_avg += time_test(increment_unsafe);
     }
