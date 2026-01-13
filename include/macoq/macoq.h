@@ -55,3 +55,13 @@ void macoq_rwlock_write_lock(macoq_rwlock* rwlock);
 // Unlock readers or writers, if any
 void macoq_rwlock_unlock(macoq_rwlock* rwlock);
 
+// Barrier
+typedef struct {
+    macoq_cond_var cond_var;
+    macoq_mutex mutex;
+    atomic_int total;
+} macoq_barrier;
+// Initialize barrier
+void macoq_barrier_create(macoq_barrier* barrier, int total);
+// Block until total threads have called this function
+void macoq_barrier_wait(macoq_barrier* barrier);
