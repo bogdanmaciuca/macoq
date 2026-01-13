@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <linux/futex.h>
 #include <syscall.h>
+#include <limits.h>
 
 // Sleeps until `*addr != value`
 static inline void syscall_wait(atomic_int* addr, int value) {
@@ -15,8 +16,9 @@ static inline void syscall_wake(atomic_int* addr) {
 }
 
 // Wakes up all threads
+// Wakes up all threads
 static inline void syscall_wake_all(atomic_int* addr) {
-    syscall(SYS_futex, addr, FUTEX_WAKE | FUTEX_PRIVATE_FLAG, 1 << 31, NULL, NULL, 0);
+    syscall(SYS_futex, addr, FUTEX_WAKE | FUTEX_PRIVATE_FLAG, INT_MAX, NULL, NULL, 0);
 }
 
 
