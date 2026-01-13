@@ -45,6 +45,7 @@ bool macoq_semaphore_trywait(macoq_semaphore* sem);
 // RW lock
 typedef struct {
     atomic_int state;
+    atomic_int writers_waiting;
 } macoq_rwlock;
 // Initialize rwlock
 void macoq_rwlock_create(macoq_rwlock* rwlock);
